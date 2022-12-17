@@ -5,14 +5,15 @@
   - Runtime - `node.js v18`
   - Plugins - `GitHub.copilot`, `GitHub.copilot-labs`, `MS-vsliveshare.vsliveshare-pack`
   - Initialization - `npm install` as postCreateCommand
-- `.gitignore`ファイルの修正（不要なファイルの削除）
+- `.gitignore`ファイルの修正（不要なファイルの削除）。
 - `package.json`の修正。
   - `nodemon`の追加（`.js`ファイル修正時のアプリケーション再起動のため）。
-  - `tslint`の追加（必要に応じた`GHAS`連携のため）
-- 不要な（混乱を招きそうな）Actions Workflowを削除）
+  - `tslint`の追加（必要に応じた`GHAS`連携のため）。
+- 不要な（混乱を招きそうな）Actions Workflowを削除）。
   - `.github/workflows/azure.yml`
   - `.github/workflows/octodemo-javascript-workflow.yml`
-- MEMBERS.mdファイルの追加
+- MEMBERS.mdファイルの追加。
+- 動作未実装のボタン画像の追加（CSS / HTMLタグ)。
 
 ### Respoitory Settings
 
