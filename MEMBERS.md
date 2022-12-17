@@ -2,5 +2,4 @@
 
 - @yuichielectric
 - @dchomh
-- @parroty
 - ???
