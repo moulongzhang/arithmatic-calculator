@@ -12,6 +12,7 @@
 - 不要な（混乱を招きそうな）Actions Workflowを削除）
   - `.github/workflows/azure.yml`
   - `.github/workflows/octodemo-javascript-workflow.yml`
+- MEMBERS.mdファイルの追加
 
 ### Respoitory Settings
 
