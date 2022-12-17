@@ -14,6 +14,7 @@
   - `.github/workflows/octodemo-javascript-workflow.yml`
 - MEMBERS.mdファイルの追加。
 - 動作未実装のボタン画像の追加（CSS / HTMLタグ)。
+- タイトルを「仮((Under Development)」に変更。
 
 ### Respoitory Settings
 
