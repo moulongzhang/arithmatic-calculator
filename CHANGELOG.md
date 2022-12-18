@@ -15,6 +15,7 @@
 - MEMBERS.mdファイルの追加。
 - 動作未実装のボタン画像の追加（CSS / HTMLタグ)。
 - タイトルを「仮((Under Development)」に変更。
+- 画像(invertocat.svg)を登録。
 
 ### Respoitory Settings
 
