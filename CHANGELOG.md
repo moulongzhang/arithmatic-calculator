@@ -17,6 +17,7 @@
 - タイトルを「仮(Under Development)」に変更。
 - 画像(`invertocat.svg`)を登録。
 - 実装に`TODO`マーカーを追加。
+- CI用のActions Workflowバージョン更新（`node.js`, `actions`）
 
 ### Respoitory Settings
 
