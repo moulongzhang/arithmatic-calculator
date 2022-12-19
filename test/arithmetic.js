@@ -24,14 +24,14 @@ describe('Arithmetic', function() {
               done();
           });
     });
-    it('rejects missing operand2', function(done) {
+    /*it('rejects missing operand2', function(done) {
       request.get('/arithmetic?operation=add&operand1=21')
           .expect(400)
           .end(function(err, res) {
               expect(res.body).to.eql({ error: "Invalid operand2: undefined" });
               done();
           });
-    });
+    });*/
     it('rejects operands with invalid sign', function(done) {
       request.get('/arithmetic?operation=add&operand1=4.2-1&operand2=4')
           .expect(400)
