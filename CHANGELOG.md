@@ -17,7 +17,9 @@
 - タイトルを「仮(Under Development)」に変更。
 - 画像(`invertocat.svg`)を登録。
 - 実装に`TODO`マーカーを追加。
-- CI用のActions Workflowバージョン更新（`node.js`, `actions`）
+- CI用のActions Workflowバージョン更新（`node.js`, `actions`）。
+- 単項演算子向けの(`unaryOperationPressed`)を追加(`operationPressed`は二項演算子向けのため）。
+  - 合わせて、Operand2のValidationを無効化。
 
 ### Respoitory Settings
 

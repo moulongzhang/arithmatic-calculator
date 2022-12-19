@@ -193,6 +193,15 @@
         state = states.operator;
       }
 
+      function unaryOperationPressed(op) {
+        operand1 = getValue();
+        if (operand1) {
+          operation = op;
+          state = states.complete;
+          calculate(operand1, '', operation);
+        }
+      }
+
       function equalPressed()
       {
         if (state < states.operand2) {
@@ -209,11 +218,6 @@
 
         calculate(operand1, operand2, operation);
       }
-
-      // TODO: Add button press logics
-      /* function xxx {
-
-      } */
 
       // TODO: Add key press logics
       document.addEventListener('keypress', (event) => {
