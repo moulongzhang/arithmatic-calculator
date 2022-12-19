@@ -101,6 +101,22 @@ BUTTON
 #one, #two, #three, #subtract { top: 361px; }
 #zero, #decimal, #equal, #add { top: 414px; }
 
+#power { left: 0px; top: 477px; }
+#sqrt { left: 65px; top: 477px; }
+#factorial { left: 130px; top: 477px; }
+#log { left: 195px; top: 477px; }
+
+#percent { left: 0px; top: 530px; }
+#tax { left: 65px; top: 530px; }
+
+#image-icon {
+    left: 0px;
+    top: 202px;
+    position: relative;
+    width: 55px;
+    height: 42px;
+}
+
 .resultchar
 {
   display: inline-block;

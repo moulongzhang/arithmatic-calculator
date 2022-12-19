@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Pocket Calculator</title>
+    <title>Calculator (Under Development)</title>
     <link rel="stylesheet" href="default.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <script>
@@ -87,6 +87,7 @@
       {
         var uri = location.origin + "/arithmetic";
 
+        // TODO: Add operator
         switch(operation) {
           case '+':
             uri += "?operation=add";
@@ -209,6 +210,12 @@
         calculate(operand1, operand2, operation);
       }
 
+      // TODO: Add button press logics
+      /* function xxx {
+
+      } */
+
+      // TODO: Add key press logics
       document.addEventListener('keypress', (event) => {
         if (event.key.match(/^\d+$/)) {
           numberPressed(event.key);
@@ -233,6 +240,7 @@
 
       <div id="buttons">
         <div>
+          <image id="image-icon" src="empty.svg" />
           <button id="clear" onClick="clearPressed()">C</button>
           <button id="clearEntry" onClick="clearEntryPressed()">CE</button>
         </div>
@@ -261,6 +269,17 @@
           <button id="equal" onClick="equalPressed()">=</button>
           <button id="add" onClick="operationPressed('+')">+</button>
         </div>
+
+        <!-- TODO: Add button press logics -->
+        <div>
+          <button id="power" onClick="return false;">Exp</button>
+          <button id="sqrt" onClick="return false;">√</button>
+          <button id="factorial" onClick="return false;">!</button>
+          <button id="log" onClick="return false;">Log</button>
+        </div>
+        <div>
+          <button id="percent" onClick="return false;">%</button>
+          <button id="tax" onClick="return false;">Tax</button>
       </div>
     </div>
   </body>
