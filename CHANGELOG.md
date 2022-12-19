@@ -8,7 +8,7 @@
 - `.gitignore`ファイルの修正（不要なファイルの削除）。
 - `package.json`の修正。
   - `nodemon`の追加（`.js`ファイル修正時のアプリケーション自動再起動のため）。
-  - `tslint`の追加（必要に応じた`GHAS`連携のため）。
+  - `tslint`, `.eslintrc.js`の追加（必要に応じた`GHAS`連携のため）。
 - 不要な（混乱を招きそうな）Actions Workflowを削除）。
   - `.github/workflows/azure.yml`
   - `.github/workflows/octodemo-javascript-workflow.yml`
