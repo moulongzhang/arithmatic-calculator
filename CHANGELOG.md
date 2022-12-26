@@ -1,6 +1,9 @@
 # ChangeLog
+## v0.2
+- `.eslintrc.js`の修正(`mocha`, `request`の追加)
 
-## Repository Contents
+## v0.1 (2022/12/20)
+### Repository Contents
 - Codespaces用設定（`.devcontainer`）の追加。
   - Runtime - `node.js v18`
   - Plugins - `GitHub.copilot`, `GitHub.copilot-labs`, `MS-vsliveshare.vsliveshare-pack`
