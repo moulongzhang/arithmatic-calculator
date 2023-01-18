@@ -1,4 +1,8 @@
 # ChangeLog
+## v0.3
+- Codespaces用設定（`.devcontainer`）の修正。
+  - `docker-in-docker` featureの追加。
+
 ## v0.2
 - `.eslintrc.js`の修正(`mocha`, `request`の追加)
 
