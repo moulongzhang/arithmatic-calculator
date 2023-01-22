@@ -1,5 +1,4 @@
-module.exports = function(app) {
-  var arithmetic = require("./controllers/arithmeticController");
-
-  app.route("/arithmetic").get(arithmetic.calculate);
+module.exports = function (app) {
+  const arithmetic = require('./controller');
+  app.route('/arithmetic').get(arithmetic.calculate);
 };
