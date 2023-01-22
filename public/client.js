@@ -12,10 +12,6 @@ var states = {
 
 var state = states.start;
 
-var previousOperand1 = 0;
-var previousOperand2 = 0;
-var previousOperation = null;
-
 var operand1 = 0;
 var operand2 = 0;
 var operation = null;
@@ -65,9 +61,6 @@ function calculate(operand1, operand2, operation) {
 function clearPressed() {
     setValue(0);
 
-    previousOperand1 = 0;
-    previousOperand2 = 0;
-    previousOperation = null;
     operand1 = 0;
     operand2 = 0;
     operation = null;
