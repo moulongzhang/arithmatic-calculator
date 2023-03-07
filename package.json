@@ -1,10 +1,10 @@
 {
-  "name": "@octodemo/node-calculator",
+  "name": "node-calculator",
   "version": "1.0.0",
   "description": "Calculator",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/octodemo/node-calculator.git"
+    "url": "https://github.com/demo/node-calculator.git"
   },
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "ci",
     "cd"
   ],
-  "author": "Edward Thomson <ethomson@microsoft.com>",
+  "author": "Demo User",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.4",
@@ -39,9 +39,9 @@
     "supertest": "^3.4.2"
   },
   "bugs": {
-    "url": "https://github.com/octodemo/node-calculator/issues"
+    "url": "https://github.com/demo/node-calculator/issues"
   },
-  "homepage": "https://github.com/octodemo/node-calculator#readme",
+  "homepage": "https://github.com/demo/node-calculator#readme",
   "directories": {
     "test": "test"
   }
