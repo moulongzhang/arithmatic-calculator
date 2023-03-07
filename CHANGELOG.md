@@ -1,4 +1,8 @@
 # ChangeLog
+## v0.4
+- Copilot関連の設定。
+- 不要なファイルの削除。
+
 ## v0.3
 - Codespaces用設定（`.devcontainer`）の修正。
   - `docker-in-docker` featureの追加。
