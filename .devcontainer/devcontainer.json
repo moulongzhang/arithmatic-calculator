@@ -11,8 +11,7 @@
 		"vscode": {
 			"extensions": [
 				"GitHub.copilot",
-				"GitHub.copilot-labs",
-				"MS-vsliveshare.vsliveshare-pack"
+				"GitHub.copilot-labs"
 			]
 		}
 	},
