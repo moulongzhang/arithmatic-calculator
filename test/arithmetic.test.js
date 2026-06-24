@@ -187,6 +187,63 @@ describe('Arithmetic', function () {
         });
     });
 
+    describe('Power', function () {
+        it('raises a positive integer to a positive integer power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 8 });
+                    done();
+                });
+        });
+        it('raises an integer to the power of zero', function (done) {
+            request.get('/arithmetic?operation=power&operand1=5&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('raises an integer to a negative power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=-2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0.25 });
+                    done();
+                });
+        });
+        it('raises a negative base to an odd power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -8 });
+                    done();
+                });
+        });
+        it('raises an integer to a fractional power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=9&operand2=0.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 3 });
+                    done();
+                });
+        });
+        it('evaluates power before multiplication when chained right-associatively', function (done) {
+            // 2 ^ 3 ^ 2 should be evaluated as 2 ^ (3 ^ 2) = 2 ^ 9 = 512
+            request.get('/arithmetic?operation=power&operand1=3&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 9 });
+                    request.get('/arithmetic?operation=power&operand1=2&operand2=9')
+                        .expect(200)
+                        .end(function (err2, res2) {
+                            expect(res2.body).to.eql({ result: 512 });
+                            done();
+                        });
+                });
+        });
+    });
+
     describe('Division', function () {
         it('divides a positive integer by an integer factor ', function (done) {
             request.get('/arithmetic?operation=divide&operand1=42&operand2=2')
