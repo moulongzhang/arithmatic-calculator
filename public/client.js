@@ -2,44 +2,21 @@
 
 var value = 0;
 
-var states = {
-    "start": 0,
-    "operand1": 1,
-    "operator": 2,
-    "operand2": 3,
-    "complete": 4
-};
+// Accumulated expression prefix (completed operands and operators), e.g. "2+3^".
+// The full expression is `expression` + the current entry shown on screen.
+var expression = "";
 
-var state = states.start;
+// True when the next digit/decimal should start a fresh entry rather than append
+// to the value currently on display.
+var resetEntry = true;
 
-var operand1 = 0;
-var operand2 = 0;
-var operation = null;
+// True immediately after `=`; the next digit starts a brand new calculation while
+// the next operator continues from the displayed result.
+var justEvaluated = false;
 
-function calculate(operand1, operand2, operation) {
-    var uri = location.origin + "/arithmetic";
-
-    // TODO: Add operator
-    switch (operation) {
-        case '+':
-            uri += "?operation=add";
-            break;
-        case '-':
-            uri += "?operation=subtract";
-            break;
-        case '*':
-            uri += "?operation=multiply";
-            break;
-        case '/':
-            uri += "?operation=divide";
-            break;
-        default:
-            setError();
-            return;
-    }
-
-    uri += "&operand1=" + encodeURIComponent(operand1);
-    uri += "&operand2=" + encodeURIComponent(operand2);
+function evaluate(expressionString) {
+    var uri = location.origin + "/arithmetic/evaluate";
+    uri += "?expression=" + encodeURIComponent(expressionString);
 
     setLoading(true);
 
@@ -61,42 +38,46 @@ function calculate(operand1, operand2, operation) {
 function clearPressed() {
     setValue(0);
 
-    operand1 = 0;
-    operand2 = 0;
-    operation = null;
-    state = states.start;
+    expression = "";
+    resetEntry = true;
+    justEvaluated = false;
 }
 
 function clearEntryPressed() {
     setValue(0);
-    state = (state == states.operand2) ? states.operator : states.start;
+    resetEntry = true;
 }
 
 function numberPressed(n) {
-    var value = getValue();
-
-    if (state == states.start || state == states.complete) {
-        value = n;
-        state = (n == '0' ? states.start : states.operand1);
-    } else if (state == states.operator) {
-        value = n;
-        state = (n == '0' ? states.operator : states.operand2);
-    } else if (value.replace(/[-\.]/g, '').length < 8) {
-        value += n;
+    if (justEvaluated) {
+        expression = "";
+        justEvaluated = false;
+        resetEntry = true;
     }
 
-    value += "";
+    var current = getValue().toString();
 
-    setValue(value);
+    if (resetEntry) {
+        current = n.toString();
+        // Keep replacing while the entry is just a leading zero.
+        resetEntry = (current === '0');
+    } else if (current.replace(/[-\.]/g, '').length < 8) {
+        current += n;
+    }
+
+    setValue(current);
 }
 
 function decimalPressed() {
-    if (state == states.start || state == states.complete) {
+    if (justEvaluated) {
+        expression = "";
+        justEvaluated = false;
+        resetEntry = true;
+    }
+
+    if (resetEntry) {
         setValue('0.');
-        state = states.operand1;
-    } else if (state == states.operator) {
-        setValue('0.');
-        state = states.operand2;
+        resetEntry = false;
     } else if (!getValue().toString().includes('.')) {
         setValue(getValue() + '.');
     }
@@ -111,25 +92,32 @@ function signPressed() {
 }
 
 function operationPressed(op) {
-    operand1 = getValue();
-    operation = op;
-    state = states.operator;
+    // Continue building the expression from whatever is currently displayed,
+    // whether that is a freshly typed operand or a previous result.
+    justEvaluated = false;
+    expression += getValue().toString() + op;
+    resetEntry = true;
 }
 
 function equalPressed() {
-    if (state < states.operand2) {
-        state = states.complete;
-        return;
+    var fullExpression;
+
+    if (resetEntry) {
+        // No new operand was entered since the last operator: drop any trailing
+        // operators and evaluate what we have.
+        fullExpression = expression.replace(/[-+*/^]+$/, '');
+        if (fullExpression === "") {
+            fullExpression = getValue().toString();
+        }
+    } else {
+        fullExpression = expression + getValue().toString();
     }
 
-    if (state == states.operand2) {
-        operand2 = getValue();
-        state = states.complete;
-    } else if (state == states.complete) {
-        operand1 = getValue();
-    }
+    expression = "";
+    resetEntry = true;
+    justEvaluated = true;
 
-    calculate(operand1, operand2, operation);
+    evaluate(fullExpression);
 }
 
 // TODO: Add key press logics
@@ -138,7 +126,7 @@ document.addEventListener('keypress', (event) => {
         numberPressed(event.key);
     } else if (event.key == '.') {
         decimalPressed();
-    } else if (event.key.match(/^[-*+/]$/)) {
+    } else if (event.key.match(/^[-*+/^]$/)) {
         operationPressed(event.key);
     } else if (event.key == '=') {
         equalPressed();
