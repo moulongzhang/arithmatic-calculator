@@ -228,20 +228,6 @@ describe('Arithmetic', function () {
                     done();
                 });
         });
-        it('evaluates power before multiplication when chained right-associatively', function (done) {
-            // 2 ^ 3 ^ 2 should be evaluated as 2 ^ (3 ^ 2) = 2 ^ 9 = 512
-            request.get('/arithmetic?operation=power&operand1=3&operand2=2')
-                .expect(200)
-                .end(function (err, res) {
-                    expect(res.body).to.eql({ result: 9 });
-                    request.get('/arithmetic?operation=power&operand1=2&operand2=9')
-                        .expect(200)
-                        .end(function (err2, res2) {
-                            expect(res2.body).to.eql({ result: 512 });
-                            done();
-                        });
-                });
-        });
     });
 
     describe('Division', function () {
@@ -298,6 +284,79 @@ describe('Arithmetic', function () {
                 .expect(200)
                 .end(function (err, res) {
                     expect(res.body).to.eql({ result: null });
+                    done();
+                });
+        });
+    });
+
+    describe('Expression evaluation', function () {
+        function evaluates(expression, expected) {
+            return function (done) {
+                request.get('/arithmetic/evaluate?expression=' + encodeURIComponent(expression))
+                    .expect(200)
+                    .end(function (err, res) {
+                        expect(res.body).to.eql({ result: expected });
+                        done();
+                    });
+            };
+        }
+
+        it('evaluates a single power expression', evaluates('2 ^ 3', 8));
+        it('evaluates a bare number', evaluates('42', 42));
+
+        it('gives power a higher precedence than multiplication',
+            evaluates('2 * 3 ^ 2', 18));
+        it('gives power a higher precedence than division',
+            evaluates('18 / 3 ^ 2', 2));
+        it('gives power a higher precedence than addition',
+            evaluates('2 + 3 ^ 2', 11));
+        it('gives power a higher precedence than subtraction',
+            evaluates('20 - 3 ^ 2', 11));
+
+        it('evaluates chained power right-associatively (2 ^ 3 ^ 2 === 2 ^ (3 ^ 2))',
+            evaluates('2 ^ 3 ^ 2', 512));
+        it('does not evaluate chained power left-associatively',
+            evaluates('2 ^ 1 ^ 0', 2));
+
+        it('preserves left-to-right order for addition and subtraction',
+            evaluates('10 - 3 - 2', 5));
+        it('preserves left-to-right order for multiplication and division',
+            evaluates('12 / 3 * 2', 8));
+
+        it('honours parentheses over default precedence',
+            evaluates('(2 + 3) ^ 2', 25));
+        it('forces left-associative power with parentheses',
+            evaluates('(2 ^ 3) ^ 2', 64));
+
+        it('supports a negative base via a unary minus',
+            evaluates('-2 ^ 2', -4));
+        it('supports a signed exponent',
+            evaluates('2 ^ -2', 0.25));
+
+        it('evaluates a mixed expression using full precedence',
+            evaluates('2 + 3 * 4 ^ 2 - 1', 49));
+
+        it('rejects a missing expression', function (done) {
+            request.get('/arithmetic/evaluate')
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ error: "Unspecified expression" });
+                    done();
+                });
+        });
+        it('rejects an expression with invalid characters', function (done) {
+            request.get('/arithmetic/evaluate?expression=' + encodeURIComponent('2 ^ a'))
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body.error).to.match(/Invalid character/);
+                    done();
+                });
+        });
+        it('rejects an expression with mismatched parentheses', function (done) {
+            request.get('/arithmetic/evaluate?expression=' + encodeURIComponent('(2 ^ 3'))
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body.error).to.match(/parentheses|Unexpected token/);
                     done();
                 });
         });
