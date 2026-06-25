@@ -245,4 +245,89 @@ describe('Arithmetic', function () {
                 });
         });
     });
+
+    describe('Power', function () {
+        it('raises a positive integer to a positive integer power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=3')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 8 });
+                    done();
+                });
+        });
+        it('raises an integer to the power of zero', function (done) {
+            request.get('/arithmetic?operation=power&operand1=42&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('raises an integer to the power of one', function (done) {
+            request.get('/arithmetic?operation=power&operand1=42&operand2=1')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 42 });
+                    done();
+                });
+        });
+        it('raises a negative base to an even power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=-2&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 4 });
+                    done();
+                });
+        });
+        it('raises a base to a negative power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=2&operand2=-2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0.25 });
+                    done();
+                });
+        });
+        it('raises a base to a fractional power', function (done) {
+            request.get('/arithmetic?operation=power&operand1=9&operand2=0.5')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 3 });
+                    done();
+                });
+        });
+        it('raises a base supporting exponential notation', function (done) {
+            request.get('/arithmetic?operation=power&operand1=1e1&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 100 });
+                    done();
+                });
+        });
+        it('evaluates right-associatively (2 ^ 3 ^ 2 = 2 ^ 9 = 512)', function (done) {
+            request.get('/arithmetic?operation=power&operand1=3&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 9 });
+                    request.get('/arithmetic?operation=power&operand1=2&operand2=' + res.body.result)
+                        .expect(200)
+                        .end(function (err2, res2) {
+                            expect(res2.body).to.eql({ result: 512 });
+                            done();
+                        });
+                });
+        });
+        it('has higher precedence than multiplication (2 * 3 ^ 2 = 2 * 9 = 18)', function (done) {
+            request.get('/arithmetic?operation=power&operand1=3&operand2=2')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 9 });
+                    request.get('/arithmetic?operation=multiply&operand1=2&operand2=' + res.body.result)
+                        .expect(200)
+                        .end(function (err2, res2) {
+                            expect(res2.body).to.eql({ result: 18 });
+                            done();
+                        });
+                });
+        });
+    });
 });
